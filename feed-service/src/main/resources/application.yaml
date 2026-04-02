@@ -9,6 +9,18 @@ spring:
     mongodb:
       uri: mongodb://localhost:27017/social_db
 
+  kafka:
+    bootstrap-servers: localhost:9092
+
+    consumer:
+      group-id: feed-group
+      auto-offset-reset: earliest
+      properties:
+        spring.json.trusted.packages: "*"
+
+    listener:
+      missing-topics-fatal: false
+
 eureka:
   client:
     service-url:

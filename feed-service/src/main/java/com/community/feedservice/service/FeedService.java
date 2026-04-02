@@ -15,7 +15,7 @@ public class FeedService {
 
     private final FeedRepository repository;
 
-    // Called when a user creates a post
+    //  CALLED FROM KAFKA CONSUMER
     public void updateFollowersFeed(String userId, String postId, String content, List<String> followers) {
 
         for (String followerId : followers) {
@@ -32,15 +32,33 @@ public class FeedService {
             item.setUserId(userId);
             item.setContent(content);
 
-            feed.getItems().add(0, item); // latest on top
+            //  LATEST FIRST
+            feed.getItems().add(0, item);
+
+            //  LIMIT FEED SIZE (ADD HERE ONLY)
+            if (feed.getItems().size() > 100) {
+                feed.getItems().remove(feed.getItems().size() - 1);
+            }
 
             repository.save(feed);
         }
     }
 
-    public List<FeedItem> getFeed(String userId) {
-        return repository.findByUserId(userId)
-                .orElseThrow(() -> new GlobalException("Feed not found"))
-                .getItems();
+    //  PAGINATION
+    public List<FeedItem> getFeed(String userId, int page, int size) {
+
+        Feed feed = repository.findByUserId(userId)
+                .orElseThrow(() -> new GlobalException("Feed not found for userId: " + userId));
+
+        List<FeedItem> items = feed.getItems();
+
+        int start = page * size;
+        int end = Math.min(start + size, items.size());
+
+        if (start >= items.size()) {
+            return List.of();
+        }
+
+        return items.subList(start, end);
     }
 }

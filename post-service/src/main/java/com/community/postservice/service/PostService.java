@@ -2,14 +2,13 @@ package com.community.postservice.service;
 
 import com.community.commonlib.exception.GlobalException;
 import com.community.postservice.EventPublisher;
-import com.community.postservice.RateLimiter;
 import com.community.postservice.dto.PostRequest;
+import com.community.postservice.entity.Comment;
 import com.community.postservice.entity.Post;
 import com.community.postservice.repo.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.xml.stream.events.Comment;
 import java.util.List;
 
 @Service
@@ -18,10 +17,10 @@ public class PostService {
 
     private final PostRepository repository;
     private final EventPublisher eventPublisher;
-    private final RateLimiter rateLimiter;
+//    private final RateLimiter rateLimiter;
 
     public Post create(PostRequest request) {
-        rateLimiter.validate(request.getUserId());
+//        rateLimiter.validate(request.getUserId());
         Post post = new Post();
         post.setUserId(request.getUserId());
         post.setContent(request.getContent());

@@ -20,26 +20,26 @@ public class UserController {
     }
 
     @PostMapping("/{userId}/follow/{targetId}")
-    public ResponseEntity<?> follow(@PathVariable String userId,
-                                    @PathVariable String targetId) {
+    public ResponseEntity<?> follow(@PathVariable("userId") String userId,
+                                    @PathVariable("targetId") String targetId) {
         service.follow(userId, targetId);
         return ResponseEntity.ok("Followed");
     }
 
     @PostMapping("/{userId}/unfollow/{targetId}")
-    public ResponseEntity<?> unfollow(@PathVariable String userId,
-                                      @PathVariable String targetId) {
+    public ResponseEntity<?> unfollow(@PathVariable("userId") String userId,
+                                      @PathVariable("targetId") String targetId) {
         service.unfollow(userId, targetId);
         return ResponseEntity.ok("Unfollowed");
     }
 
     @GetMapping("/{userId}/followers")
-    public ResponseEntity<?> followers(@PathVariable String userId) {
+    public ResponseEntity<?> followers(@PathVariable("userId") String userId) {
         return ResponseEntity.ok(service.getFollowers(userId));
     }
 
     @GetMapping("/{userId}/following")
-    public ResponseEntity<?> following(@PathVariable String userId) {
+    public ResponseEntity<?> following(@PathVariable("userId") String userId) {
         return ResponseEntity.ok(service.getFollowing(userId));
     }
 }
